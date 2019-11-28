@@ -41,7 +41,7 @@ class Tests(db.Model):
 	Productor = db.Column("productor", db.String, nullable=False)
 	CreatedOn = db.Column("created", db.TIMESTAMP, default=datetime.now)
 
-	client_idIdFk = db.Column("client_idIdFk", db.Integer, db.ForeignKey("clients.client_id"))
+	client_idIdFk = db.Column("client_ididfk", db.Integer, db.ForeignKey("clients.client_id"))
 	Client = db.relationship("Clients", backref=backref('Tests', cascade='all,delete'), passive_deletes=True)
 
 	def wtf(self):
@@ -65,7 +65,7 @@ class Products(db.Model):
 	Product_price = db.Column("product_price", db.Integer, nullable=False)
 	CreatedOn = db.Column("created", db.TIMESTAMP, default=datetime.now)
 
-	test_idIdFk = db.Column("test_idIdFk", db.Integer, db.ForeignKey("tests.test_id"))
+	test_idIdFk = db.Column("test_ididfk", db.Integer, db.ForeignKey("tests.test_id"))
 	Test = db.relationship("Tests", backref=backref('Products', cascade='all,delete'), passive_deletes=True)
 
 	def wtf(self):
@@ -90,7 +90,7 @@ class Shops(db.Model):
 	Shop_contact = db.Column("shop_contact", db.Integer, nullable=False)
 	CreatedOn = db.Column("created", db.TIMESTAMP, default=datetime.now)
 
-	product_idIdFk = db.Column("product_idIdFk", db.Integer, db.ForeignKey("products.product_id"))
+	product_idIdFk = db.Column("product_dfidik", db.Integer, db.ForeignKey("products.product_id"))
 	Product = db.relationship("Products", backref=backref('Shops', cascade='all,delete'), passive_deletes=True)
 
 	def wtf(self):
