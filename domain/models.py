@@ -90,7 +90,7 @@ class Shops(db.Model):
 	Shop_contact = db.Column("shop_contact", db.Integer, nullable=False)
 	CreatedOn = db.Column("created", db.TIMESTAMP, default=datetime.now)
 
-	product_idIdFk = db.Column("product_dfidik", db.Integer, db.ForeignKey("products.product_id"))
+	product_idIdFk = db.Column("product_ididfk", db.Integer, db.ForeignKey("products.product_id"))
 	Product = db.relationship("Products", backref=backref('Shops', cascade='all,delete'), passive_deletes=True)
 
 	def wtf(self):
