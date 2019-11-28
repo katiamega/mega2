@@ -16,7 +16,7 @@ class Clients(db.Model):
 	Age = db.Column("age", db.Integer)
 	Money = db.Column("money", db.Integer)
 	Contact = db.Column("contact", db.Integer)
-	CreatedOn = db.Column("createdOn", db.TIMESTAMP, default=datetime.now)
+	Created = db.Column("created", db.TIMESTAMP, default=datetime.now)
 
 	def wtf(self):
 		return ClientsViewModel(
@@ -24,7 +24,7 @@ class Clients(db.Model):
 			Age=self.Age,
 			Money=self.Money,
 			Contact=self.Contact,
-			CreatedOn=self.CreatedOn
+			created=self.created
 		)
 
 	def map_from(self, form):
@@ -39,7 +39,7 @@ class Tests(db.Model):
 	test_id = db.Column("test_id", db.Integer, primary_key=True)
 	Price = db.Column("price", db.Integer, nullable=False)
 	Productor = db.Column("productor", db.String, nullable=False)
-	CreatedOn = db.Column("createdOn", db.TIMESTAMP, default=datetime.now)
+	created = db.Column("created", db.TIMESTAMP, default=datetime.now)
 
 	client_idIdFk = db.Column("client_idIdFk", db.Integer, db.ForeignKey("clients.client_id"))
 	Client = db.relationship("Clients", backref=backref('Tests', cascade='all,delete'), passive_deletes=True)
@@ -48,7 +48,7 @@ class Tests(db.Model):
 		return TestsViewModel(
 			Price=self.Price,
 			Productor=self.Productor,
-			CreatedOn=self.CreatedOn,
+			created=self.created,
 			Client=self.client_idIdFk
 		)
 
@@ -63,7 +63,7 @@ class Products(db.Model):
 	product_id = db.Column("product_id", db.Integer, primary_key=True)
 	Product_name = db.Column("product_name", db.String, nullable=False)
 	Product_price = db.Column("product_price", db.Integer, nullable=False)
-	CreatedOn = db.Column("createdOn", db.TIMESTAMP, default=datetime.now)
+	created = db.Column("created", db.TIMESTAMP, default=datetime.now)
 
 	test_idIdFk = db.Column("test_idIdFk", db.Integer, db.ForeignKey("tests.test_id"))
 	Test = db.relationship("Tests", backref=backref('Products', cascade='all,delete'), passive_deletes=True)
@@ -72,7 +72,7 @@ class Products(db.Model):
 		return ProductsViewModel(
 			Product_name=self.Product_name,
 			Product_price=self.Product_price,
-			CreatedOn=self.CreatedOn,
+			created=self.created,
 			Test=self.test_idIdFk
 		)
 
@@ -88,7 +88,7 @@ class Shops(db.Model):
 	Shop_name = db.Column("shop_name", db.String, nullable=False)
 	Locale = db.Column("locale", db.String, nullable=False)
 	Shop_contact = db.Column("shop_contact", db.Integer, nullable=False)
-	CreatedOn = db.Column("createdOn", db.TIMESTAMP, default=datetime.now)
+	created = db.Column("created", db.TIMESTAMP, default=datetime.now)
 
 	product_idIdFk = db.Column("product_idIdFk", db.Integer, db.ForeignKey("products.product_id"))
 	Product = db.relationship("Products", backref=backref('Shops', cascade='all,delete'), passive_deletes=True)
@@ -98,7 +98,7 @@ class Shops(db.Model):
 			Shop_name=self.Shop_name,
 			Locale=self.Locale,
 			Shop_contact=self.Shop_contact,
-			CreatedOn=self.CreatedOn,
+			created=self.created,
 			Product=self.product_idIdFk
 		)
 
