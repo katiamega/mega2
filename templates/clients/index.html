@@ -24,7 +24,7 @@
 							<td>{{client.Age}}</td>
 							<td>{{client.Money}}</td>
 							<td>{{client.Contact}}</td>
-							<td>{{client.CreatedOn.strftime("%b %d %Y %H:%M:%S")}}</td>
+							<td>{{client.Created.strftime("%b %d %Y %H:%M:%S")}}</td>
                             <td class="d-flex justify-content-end">
                                 <a href="{{url_for('update_client', uuid=client.client_id)}}" class="btn btn-success">Edit</a>
                                 <form method="post" action="{{url_for('delete_client', uuid=client.client_id)}}" class="delete-record">

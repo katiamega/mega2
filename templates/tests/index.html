@@ -22,7 +22,7 @@
                     <td>{{ test.Price }}</td>
                     <td>{{ test.Productor }}</td>
                     <td>{{ test.Client.Client_name }}</td>
-                    <td>{{ test.CreatedOn.strftime("%b %d %Y %H:%M:%S") }}</td>
+                    <td>{{ test.Created.strftime("%b %d %Y %H:%M:%S") }}</td>
                     <td class="d-flex justify-content-end">
                         <a href="{{url_for('update_test', uuid=test.test_id)}}" class="btn btn-success">Edit</a>
                         <form method="post" action="{{url_for('delete_test', uuid=test.test_id)}}" class="delete-record">
