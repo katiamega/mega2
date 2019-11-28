@@ -1,4 +1,4 @@
-from credentials import *
+from domain.credentials import *
 from sqlalchemy import create_engine
 
 
