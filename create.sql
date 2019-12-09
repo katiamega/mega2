@@ -31,17 +31,23 @@ CREATE TABLE Shops(
 	product_idIDFK int,
 	FOREIGN KEY (product_idIDFK) REFERENCES products(product_id)
 ); 
-CREATE TABLE Workers(
-    worker_id int NOT NULL PRIMARY KEY,
-    Worker_name varchar(100) NOT NULL ,
-    Birthday int NOT NULL,
-	Email int NOT NULL,
-	City varchar(100) NOT NULL,
+CREATE TABLE Vendors(
+    vendor_id int NOT NULL PRIMARY KEY,
+    Vendor_name varchar(100) NOT NULL,
+    City varchar(100) NOT NULL,
+	Rating int NOT NULL,
+	Year int NOT NULL,
 	Created timestamp,
-	shop_idIDFK int,
-	FOREIGN KEY (shop_idIDFK) REFERENCES shops(shop_id)
+	product_idIDFK int,
+	FOREIGN KEY (product_idIDFK) REFERENCES products(product_id)
 );
-
+CREATE TABLE Inits(
+    inits_id int NOT NULL PRIMARY KEY,
+    Created timestamp,
+	product_idIDFK int,
+	vendor_idIDFK int,
+	FOREIGN KEY (product_idIDFK, vendor_idIDFK ) REFERENCES products(product_id), vendors(vendor_id)
+);
 
 
 

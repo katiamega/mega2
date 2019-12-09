@@ -19,13 +19,13 @@ VALUES (3, 900, 'Germany', NOW(), 3);
 
 
 -- 
-INSERT INTO products (product_id, product_name ,product_price, Created, test-online_idIDFK)
+INSERT INTO products (product_id, product_name ,product_price, Created, test_idIDFK)
 VALUES (1,'jewellery', 1500, NOW(), 1);
 
-INSERT INTO products  (product_id, product_name ,product_price, Created, test-online_idIDFK)
+INSERT INTO products  (product_id, product_name ,product_price, Created, test_idIDFK)
 VALUES ( 2,'bags', 2700, NOW(), 3);
 
-INSERT INTO products (product_id, product_name ,product_price, Created, test-online_idIDFK)
+INSERT INTO products (product_id, product_name ,product_price, Created, test_idIDFK)
 VALUES ( 3,'clothe', 900, NOW(), 3);
 
 -- 
@@ -41,14 +41,30 @@ VALUES ( 3,'Clothe', 'Irpin', 067123999, NOW(), 3);
 
 
 
-INSERT INTO workers (worker_id, worker_name, birthday, email, city, Created, shop_idIDFK)
-VALUES (1,'Anna', 2001, '1234@.com', 'Kyiv',  NOW(),1);
+INSERT INTO vendors (vendor_id, vendor_name, city, rating, year, Created, product_idIDFK)
+VALUES (1,'Anna', 'Kyiv', 5, 1999, NOW(),1);
 
-INSERT INTO workers (worker_id, worker_name, birthday, email, city, Created, shop_idIDFK)
-VALUES (2, 'Olya', 2003, 'olya12', 'Lviv', NOW(), 2);
+INSERT INTO vendors (vendor_id, vendor_name, city, rating, year, Created, product_idIDFK)
+VALUES (2, 'Olya', 'Lviv', 6, 2000, NOW(), 2);
 
-INSERT INTO workers (worker_id, worker_name, birthday, email, city, Created, shop_idIDFK)
-VALUES ( 3,'Kate', 2001, 'Kat123', 'Irpin',  NOW(), 3);
+INSERT INTO vendors (vendor_id, vendor_name, city, rating, year, Created, product_idIDFK)
+VALUES ( 3,'Kate', 'Odessa', 8, 2001, NOW(), 3);
+
+
+
+INSERT INTO inits (inits_id, Created, product_idIDFK, vendor_idIDFK)
+VALUES (1, NOW(), 1, 1);
+
+INSERT INTO inits (inits_id, Created, product_idIDFK, vendor_idIDFK)
+VALUES (2, NOW(), 2, 2);
+
+INSERT INTO inits (inits_id, Created, product_idIDFK, vendor_idIDFK)
+VALUES ( 3, NOW(), 3, 3);
+
+
+
+
+
 
 
 
@@ -63,5 +79,5 @@ select * from Clients;
 select * from Tests;
 select * from Products;
 select * from Shops;
-select * from Workers;
-
+select * from Vendors;
+select * from Inits;

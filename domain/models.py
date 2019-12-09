@@ -116,12 +116,12 @@ class Vendors(db.Model):
 
 	vendor_id = db.Column("vendor_id", db.Integer, primary_key=True)
 	Vendor_name = db.Column("vendor_name", db.String, nullable=False)
-	City = db.Column("cite", db.String, nullable=False)
+	City = db.Column("city", db.String, nullable=False)
 	Rating = db.Column("rating", db.Integer, nullable=False)
 	Year = db.Column("year", db.Integer, nullable=False)
 	CreatedOn = db.Column("created", db.TIMESTAMP, default=datetime.now)
 
-	product_idIdFk = db.Column("productp_ididfk", db.Integer, db.ForeignKey("shops.shop_id"))
+	product_idIdFk = db.Column("product_ididfk", db.Integer, db.ForeignKey("products.product_id"))
 	Product = db.relationship("Products", backref=backref('Vendors', cascade='all,delete'), passive_deletes=True)
 
 	def wtf(self):
@@ -140,11 +140,11 @@ class Vendors(db.Model):
 		self.Rating = form.Rating.data,
 		self.Year = form.Year.data,
 		self.product_idIdFk = form.Product.data
-		
+
 class Inits(db.Model):
     __tablename__ = "inits"
 
-    inits_id = db.Column("inits_id", db.Integer, primary_key=True)
+    inits_id = db.Column("init_id", db.Integer, primary_key=True)
     CreatedOn = db.Column("createdOn", db.TIMESTAMP, default=datetime.now)
 
     product_idIdFk = db.Column("product_idIdFk", db.Integer, db.ForeignKey("products.product_id"))
@@ -164,6 +164,7 @@ class Inits(db.Model):
         self.vendor_idIdFk = form.Vendor.data,
         self.product_idIdFk = form.Product.data
 		
+
 
 
     

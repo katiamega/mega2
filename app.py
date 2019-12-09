@@ -264,62 +264,119 @@ def delete_shop(uuid):
     return redirect(url_for("shops"))
 	
 	
-@app.route("/workers")
-def workers():
-    all_workers = Workers.query.join(Shops).all()
-    return render_template("workers/index.html", workers=all_workers)
+@app.route("/vendors")
+def vendors():
+    all_vendors = Vendors.query.join(Products).all()
+    return render_template("vendors/index.html", vendors=all_vendors)
 
 
-@app.route("/workers/new", methods=["GET", "POST"])
-def new_worker():
-    form = WorkersViewModel()
-    form.Shop.choices = [(str(shop.shop_id), shop.Shop_name) for shop
-                            in Shops.query.join(Products, Shops.product_idIdFk == Products.product_id).all()]
+@app.route("/vendors/new", methods=["GET", "POST"])
+def new_vendor():
+    form = VendorsViewModel()
+    form.Product.choices = [(str(product.product_id), product.Product_name) for product
+                            in Products.query.join(Tests, Products.test_idIdFk == Tests.test_id).all()]
 
     if request.method == "POST":
         if not form.validate():
-            return render_template("workers/create.html", form=form)
+            return render_template("vendors/create.html", form=form)
         else:
-            product = form.domain()
-            workers = Workers.query.filter_by().all()
-            ids = [worker_data.worker_id for worker_data in workers]
+            test = form.domain()
+            vendors = Vendors.query.filter_by().all()
+            ids = [vendor_data.vendor_id for vendor_data in vendors]
             ids.append(0)
-            product.worker_id = max(ids) + 1
-            db.session.add(product)
+            test.vendor_id = max(ids) + 1
+            db.session.add(test)
             db.session.commit()
-            return redirect(url_for("workers"))
+            return redirect(url_for("vendors"))
 
-    return render_template("workers/create.html", form=form)
+    return render_template("vendors/create.html", form=form)
 
 
-@app.route("/workers/<uuid>", methods=["GET", "POST"])
-def update_worker(uuid):
-    worker = Workers.query.filter(Workers.worker_id == uuid).first()
-    form = worker.wtf()
-    form.Shop.choices = [(str(shop.shop_id), shop.Shop_name) for shop
-                            in Shops.query.join(Products, Shops.product_idIdFk == Products.product_id).all()]
+@app.route("/vendors/<uuid>", methods=["GET", "POST"])
+def update_vendor(uuid):
+    vendor = Vendors.query.filter(Vendors.vendor_id == uuid).first()
+    form = vendor.wtf()
+    form.Product.choices = [(str(product.product_id), product.Product_name) for product
+                            in Products.query.join(Tests, Products.test_idIdFk == Tests.test_id).all()]
+    if request.method == "POST":
+        if not form.validate():
+            return render_template("vendors/update.html", form=form)
+        vendor.map_from(form)
+        db.session.commit()
+        return redirect(url_for("vendors"))
+
+    return render_template("vendors/update.html", form=form)
+
+
+@app.route("/vendors/delete/<uuid>", methods=["POST"])
+def delete_vendor(uuid):
+    vendor = Vendors.query.filter(Vendors.vendor_id == uuid).first()
+    if vendor:
+        db.session.delete(vendor)
+        db.session.commit()
+
+    return redirect(url_for("vendors"))\
+
+@app.route("/inits")
+def inits():
+    all_inits = Inits.query.join(Products).join(Vendors).all()
+    return render_template("inits/index.html", inits=all_inits)\
+
+@app.route("/inits/new", methods=["GET", "POST"])
+def new_init():
+    form = InitsViewModel()
+    form.Vendor.choices = [
+        (str(vendor.vendor_id), vendor.Vendor_name) for vendor in
+        Vendors.query.all()]
+
+    form.Product.choices = [(str(product.product_id), product.Product_name) for product in
+                             Products.query.all()]
 
     if request.method == "POST":
         if not form.validate():
-            return render_template("workers/update.html", form=form)
-        worker.map_from(form)
+            return render_template("inits/create.html", form=form)
+        else:
+            init = form.domain()
+            db.session.add(init)
+            db.session.commit()
+            return redirect(url_for("inits"))
+
+    return render_template("inits/create.html", form=form)
+
+
+@app.route("/inits/delete/<uuid>", methods=["POST"])
+def delete_init(uuid):
+    init = Inits.query.filter(Inits.inits_id == uuid).first()
+    if init:
+        db.session.delete(init)
         db.session.commit()
-        return redirect(url_for("workers"))
 
-    return render_template("workers/update.html", form=form)
+    return redirect(url_for("inits"))
 
 
-@app.route("/workers/delete/<uuid>", methods=["POST"])
-def delete_worker(uuid):
-    worker = Workers.query.filter(Workers.worker_id == uuid).first()
-    if worker:
-        db.session.delete(worker)
+@app.route("/inits/<uuid>", methods=["GET", "POST"])
+def update_init(uuid):
+    init = Inits.query.filter(Inits.inits_id == uuid).first()
+    form = init.wtf()
+    form.Vendor.choices = [
+        (str(vendor.vendor_id), vendor.Vendor_name) for vendor in
+        Vendors.query.all()]
+
+    form.Product.choices = [(str(product.product_id), product.Product_name) for product in
+                             Products.query.all()]
+
+    if request.method == "POST":
+        if not form.validate():
+            return render_template("inits/update.html", form=form)
+
+        init.map_from(form)
         db.session.commit()
+        return redirect(url_for("inits"))
 
-    return redirect(url_for("workers"))
+    return render_template("inits/update.html", form=form)
+
+
 	
-	
-	
-	
+
 if __name__ == "__main__":
     app.run(debug=True)
