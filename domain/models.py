@@ -5,6 +5,9 @@ from views.clients import ClientsViewModel
 from views.tests import TestsViewModel
 from views.products import ProductsViewModel
 from views.shops import ShopsViewModel
+from views.vendors import VendorsViewModel
+from views.inits import InitsViewModel
+
 
 db = SQLAlchemy()
 
@@ -107,3 +110,60 @@ class Shops(db.Model):
 		self.Locale = form.Locale.data,
 		self.Shop_contact = form.Shop_contact.data,
 		self.product_idIdFk = form.Product.data
+		
+class Vendors(db.Model):
+	__tablename__ = "vendors"
+
+	vendor_id = db.Column("vendor_id", db.Integer, primary_key=True)
+	Vendor_name = db.Column("vendor_name", db.String, nullable=False)
+	City = db.Column("cite", db.String, nullable=False)
+	Rating = db.Column("rating", db.Integer, nullable=False)
+	Year = db.Column("year", db.Integer, nullable=False)
+	CreatedOn = db.Column("created", db.TIMESTAMP, default=datetime.now)
+
+	product_idIdFk = db.Column("productp_ididfk", db.Integer, db.ForeignKey("shops.shop_id"))
+	Product = db.relationship("Products", backref=backref('Vendors', cascade='all,delete'), passive_deletes=True)
+
+	def wtf(self):
+		return VendorsViewModel(
+			Vendor_name=self.Vendor_name,
+			City=self.City,
+			Rating=self.Rating,
+			Year=self.Year,
+			CreatedOn=self.CreatedOn,
+			Product=self.product_idIdFk
+		)
+
+	def map_from(self, form):
+		self.Vendor_name = form.Vendor_name.data,
+		self.City = form.City.data,
+		self.Rating = form.Rating.data,
+		self.Year = form.Year.data,
+		self.product_idIdFk = form.Product.data
+		
+class Inits(db.Model):
+    __tablename__ = "inits"
+
+    inits_id = db.Column("inits_id", db.Integer, primary_key=True)
+    CreatedOn = db.Column("createdOn", db.TIMESTAMP, default=datetime.now)
+
+    product_idIdFk = db.Column("product_idIdFk", db.Integer, db.ForeignKey("products.product_id"))
+    Product = db.relationship("Products", backref=backref('product', cascade='all,delete'), passive_deletes=True)
+    vendor_idIdFk = db.Column("vendor_idIdFk", db.Integer, db.ForeignKey("vendors.vendor_id"))
+    Vendor = db.relationship("Vendors", backref=backref('vendor', cascade='all,delete'),
+                             passive_deletes=True)
+
+    def wtf(self):
+        return InitsViewModel(
+            Product=self.product_idIdFk,
+            Vendor=self.vendor_idIdFk,
+            CreatedOn=self.CreatedOn
+        )
+
+    def map_from(self, form):
+        self.vendor_idIdFk = form.Vendor.data,
+        self.product_idIdFk = form.Product.data
+		
+
+
+    

@@ -3,6 +3,7 @@ from flask_wtf import FlaskForm
 from domain import models
 
 
+
 class ClientsViewModel(FlaskForm):
 
     Client_name = StringField("Client_name: ", [validators.DataRequired("Please enter your Name.")])

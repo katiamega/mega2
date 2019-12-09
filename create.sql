@@ -1,4 +1,4 @@
- CREATE TABLE Clients(
+CREATE TABLE Clients(
 client_id int NOT NULL PRIMARY KEY,
 Client_name varchar(30)  NOT NULL,
 Age int NOT NULL,
@@ -6,9 +6,6 @@ Money int NOT NULL,
 Contact int NOT NULL,
 Created timestamp
 );
-
-
-
 CREATE TABLE Tests(
     test_id int NOT NULL PRIMARY KEY,
     Price int NOT NULL ,
@@ -17,8 +14,6 @@ CREATE TABLE Tests(
 	client_idIDFK int,
 	FOREIGN KEY (client_idIDFK) REFERENCES Clients(client_id)
 	);
-
-
 CREATE TABLE Products (
 	product_id int NOT NULL PRIMARY KEY,
 	Product_name varchar(100) NOT NULL ,
@@ -35,7 +30,21 @@ CREATE TABLE Shops(
 	Created timestamp,
 	product_idIDFK int,
 	FOREIGN KEY (product_idIDFK) REFERENCES products(product_id)
+); 
+CREATE TABLE Workers(
+    worker_id int NOT NULL PRIMARY KEY,
+    Worker_name varchar(100) NOT NULL ,
+    Birthday int NOT NULL,
+	Email int NOT NULL,
+	City varchar(100) NOT NULL,
+	Created timestamp,
+	shop_idIDFK int,
+	FOREIGN KEY (shop_idIDFK) REFERENCES shops(shop_id)
 );
+
+
+
+
 
 
 

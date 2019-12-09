@@ -5,22 +5,25 @@
     {{form.hidden_tag()}}
 
     <div class="form-group">
-        {{form.Shop_name.label}}
-        {{form.Shop_name(class_="form-control")}}
+        {{form.Vendor_name.label}}
+        {{form.Vendor_name(class_="form-control")}}
     </div>
     <div class="form-group">
-        {{form.Locale.label}}
-        {{form.Locale(class_="form-control")}}
+        {{form.City.label}}
+        {{form.City(class_="form-control")}}
     </div>
 	    <div class="form-group">
-        {{form.Shop_contact.label}}
-        {{form.Shop_contact(class_="form-control")}}
+        {{form.Rating.label}}
+        {{form.Rating(class_="form-control")}}
+    </div>
+	<div class="form-group">
+        {{form.Year.label}}
+        {{form.Year(class_="form-control")}}
     </div>
     <div class="form-group">
         {{form.Product.label}}
         {{form.Product(class_="form-control")}}
     </div>
-
     {{form.Submit(class_="btn btn-success")}}
 </form>
 {% endblock %}

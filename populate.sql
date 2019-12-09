@@ -41,7 +41,27 @@ VALUES ( 3,'Clothe', 'Irpin', 067123999, NOW(), 3);
 
 
 
+INSERT INTO workers (worker_id, worker_name, birthday, email, city, Created, shop_idIDFK)
+VALUES (1,'Anna', 2001, '1234@.com', 'Kyiv',  NOW(),1);
+
+INSERT INTO workers (worker_id, worker_name, birthday, email, city, Created, shop_idIDFK)
+VALUES (2, 'Olya', 2003, 'olya12', 'Lviv', NOW(), 2);
+
+INSERT INTO workers (worker_id, worker_name, birthday, email, city, Created, shop_idIDFK)
+VALUES ( 3,'Kate', 2001, 'Kat123', 'Irpin',  NOW(), 3);
+
+
+
+
+
+
+
+
+
+
 select * from Clients;
 select * from Tests;
 select * from Products;
 select * from Shops;
+select * from Workers;
+

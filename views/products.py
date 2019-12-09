@@ -3,6 +3,7 @@ from flask_wtf import FlaskForm
 from domain import models
 
 
+
 class ProductsViewModel(FlaskForm):
     Product_name = StringField("Product_name: ", [validators.DataRequired("Please enter Product name.")])
     Product_price = IntegerField("Product_price: ", [validators.DataRequired("Please enter Product price.")])

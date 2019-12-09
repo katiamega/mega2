@@ -3,14 +3,11 @@ from flask_wtf import FlaskForm
 from domain import models
 
 
+
 class TestsViewModel(FlaskForm):
-
 	Price = IntegerField("Price: ", [validators.DataRequired("Please enter Price.")])
-	
 	Productor = StringField("Productor: ", [validators.DataRequired("Please enter Productor.")])
-
 	Client = SelectField("Client", validators=[validators.DataRequired()])
-
 	CreatedOn = DateTimeField("Created On")
 
 	Submit = SubmitField("Save")
