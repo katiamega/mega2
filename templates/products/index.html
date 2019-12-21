@@ -11,7 +11,7 @@
             <tr>
                 <th style="width: 30%">Product_name</th>
                 <th style="width: 30%">Product_price</th>
-                <th style="width: 30%">Shop_name</th>
+                <th style="width: 30%">Price</th>
                 <th style="width: 30%">Created On</th>
                 <th style="width: 20%"></th>
             </tr>
@@ -21,7 +21,7 @@
                 <tr>
                     <td>{{ product.Product_name }}</td>
                     <td>{{ product.Product_price }}</td>
-                    <td>{{ product.Shop.Shop_name }}</td>
+                    <td>{{ product.Test.Price }}</td>
                     <td>{{ product.CreatedOn.strftime("%b %d %Y %H:%M:%S")  }}</td>
                     <td class="d-flex justify-content-end">
                         <a href="{{url_for('update_product', uuid=product.product_id)}}" class="btn btn-success">Edit</a>

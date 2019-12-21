@@ -8,7 +8,7 @@ class ShopsViewModel(FlaskForm):
     Shop_name = StringField("Shop_name: ", [validators.DataRequired("Please enter  Shop_name.")])
     Locale = StringField("Locale: ", [validators.DataRequired("Please enter Locale.")])
     Shop_contact = IntegerField("Shop_contact: ", [validators.DataRequired("Please enter Shop_contact.")])
-    Test = SelectField("Test", validators=[validators.DataRequired()])
+    Product = SelectField("Product", validators=[validators.DataRequired()])
     CreatedOn = DateTimeField("Created On")
 
     Submit = SubmitField("Save")
@@ -19,5 +19,5 @@ class ShopsViewModel(FlaskForm):
             Locale=self.Locale.data,
             Shop_contact=self.Shop_contact.data,
 			CreatedOn=self.CreatedOn.data,
-            test_idIdFk=self.Test.data
+            product_idIdFk=self.Product.data
         )

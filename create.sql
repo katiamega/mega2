@@ -12,24 +12,24 @@ CREATE TABLE Tests(
 	Productor varchar(30)  NOT NULL, 
     Created timestamp,
 	client_idIDFK int,
-	FOREIGN KEY (client_idIDFK) REFERENCES Clients(client_id)
-	);
-CREATE TABLE Shops(
-    shop_id int NOT NULL PRIMARY KEY,
-    Shop_name varchar(100) NOT NULL ,
-    Locale varchar(50) NOT NULL,
-	Shop_contact int NOT NULL,
-	Created timestamp,
-	test_idIDFK int,
-	FOREIGN KEY (test_idIDFK) REFERENCES Tests(test_id)
+	FOREIGN KEY (client_idIDFK) REFERENCES clients(client_id)
 );
 CREATE TABLE Products (
 	product_id int NOT NULL PRIMARY KEY,
 	Product_name varchar(100) NOT NULL ,
 	Product_price int NOT NULL,
 	Created timestamp,
-	shop_idIDFK int,
-	FOREIGN KEY (shop_idIDFK) REFERENCES Shops(shop_id)
+	test_idIDFK int,
+	FOREIGN KEY (test_idIDFK) REFERENCES tests(test_id)
+);
+CREATE TABLE Shops(
+    shop_id int NOT NULL PRIMARY KEY,
+    Shop_name varchar(100) NOT NULL ,
+    Locale varchar(50) NOT NULL,
+	Shop_contact int NOT NULL,
+	Created timestamp,
+	product_idIDFK int,
+	FOREIGN KEY (product_idIDFK) REFERENCES products(product_id)
 );
 CREATE TABLE Vendors(
     vendor_id int NOT NULL PRIMARY KEY,

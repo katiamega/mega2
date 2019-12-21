@@ -1,12 +1,13 @@
 from flask import Flask, request, render_template, redirect, url_for
-from domain.models import db, Clients, Tests, Shops, Products, Vendors, Inits
+from domain.models import db, Clients, Tests, Products, Shops, Vendors, Inits
 from domain.credentials import *
 from views.clients import ClientsViewModel
 from views.tests import TestsViewModel
-from views.shops import ShopsViewModel
 from views.products import ProductsViewModel
+from views.shops import ShopsViewModel
 from views.vendors import VendorsViewModel
 from views.inits import InitsViewModel
+
 
 
 from sqlalchemy import desc
@@ -32,10 +33,10 @@ def map():
     db.create_all()
     client_1=Clients(client_name='Kat',client_age='30',client_money='2000',client_contact='07846351')
     test_1=Tests(price='1500', productor='Uk', client_idIDFK='1')
-    shop_1=Shops(shop_name='romantic', locale='Kyiv', shop_contact='044123567', test_idIDFK='1')
-    product_1=Products(product_name='cafe',product_price='1200',shop_idIDFK='1')
+    product_1=Products(product_name='cafe',product_price='1200',test_idIDFK='1')
+    shop_1=Shops(shop_name='romantic', locale='Kyiv', shop_contact='044123567', product_idIDFK='1')
     vendor_1=Vendors(vendor_name='Katia',city='Kyiv', rating='8',year='2018',product_idIdFk='1')
-    db.session.add_all([client_1,test_1,shop_1,product_1,vendor_1])
+    db.session.add_all([client_1,test_1,product_1,shop_1,vendor_1])
     db.session.commit()
     return render_template("layout.html")
 
@@ -43,10 +44,10 @@ def map():
 def get():
     clients=Clients.query.all()
     tests=Tests.query.all()
-    shops = Shops.query.all()
     products=Products.query.all()
+    shops = Shops.query.all()
     vendors=Vendors.query.all()
-    return render_template("layout.html",clients=clients,tests=tests,shops=shops,products=products,vendors=vendors)
+    return render_template("layout.html",clients=clients,tests=tests,products=products,shops=shops,vendors=vendors)
 
 
 
@@ -107,7 +108,6 @@ def tests():
     all_tests = Tests.query.join(Clients).order_by(desc(Tests.CreatedOn)).all()
     return render_template("tests/index.html", tests=all_tests)
 
-
 @app.route("/tests/new", methods=["GET", "POST"])
 def new_test():
     form = TestsViewModel()
@@ -153,30 +153,85 @@ def update_test(uuid):
         return redirect(url_for("tests"))
 
     return render_template("tests/update.html", form=form)
+	
+	
+	
+@app.route("/products")
+def products():
+    all_products = Products.query.join(Tests).order_by(desc(Products.CreatedOn)).all()
+    return render_template("products/index.html", products=all_products)
+	
+@app.route("/products/new", methods=["GET", "POST"])
+def new_product():
+    form = ProductsViewModel()
+    form.Test.choices = [(str(test.test_id), test.Price) for test
+                            in Tests.query.join(Clients, Tests.client_idIdFk == Clients.client_id).all()]
+
+    if request.method == "POST":
+        if not form.validate():
+            return render_template("products/create.html", form=form)
+        else:
+            client = form.domain()
+            products = Products.query.filter_by().all()
+            ids = [product_data.product_id for product_data in products]
+            ids.append(0)
+            client.product_id = max(ids) + 1
+            db.session.add(client)
+            db.session.commit()
+            return redirect(url_for("products"))
+
+    return render_template("products/create.html", form=form)
+
+
+@app.route("/products/<uuid>", methods=["GET", "POST"])
+def update_product(uuid):
+    product = Products.query.filter(Products.product_id == uuid).first()
+    form = product.wtf()
+    form.Test.choices = [(str(test.test_id), test.Price) for test
+                            in Tests.query.join(Clients, Tests.client_idIdFk == Clients.client_id).all()]
+
+    if request.method == "POST":
+        if not form.validate():
+            return render_template("products/update.html", form=form)
+        product.map_from(form)
+        db.session.commit()
+        return redirect(url_for("products"))
+
+    return render_template("products/update.html", form=form)
+
+
+@app.route("/products/delete/<uuid>", methods=["POST"])
+def delete_product(uuid):
+    product = Products.query.filter(Products.sproduct_id == uuid).first()
+    if product:
+        db.session.delete(product)
+        db.session.commit()
+
+    return redirect(url_for("products"))
 
 
 @app.route("/shops")
 def shops():
-    all_shops = Shops.query.join(Tests).order_by(desc(Shops.CreatedOn)).all()
+    all_shops = Shops.query.join(Products).all()
     return render_template("shops/index.html", shops=all_shops)
 
 
 @app.route("/shops/new", methods=["GET", "POST"])
 def new_shop():
     form = ShopsViewModel()
-    form.Test.choices = [(str(test.test_id), test.Price) for test
-                            in Tests.query.join(Clients, Tests.client_idIdFk == Clients.client_id).all()]
+    form.Product.choices = [(str(product.product_id), product.Product_name) for product
+                         in Products.query.join(Tests, Products.test_idIdFk == Tests.test_id).all()]
 
     if request.method == "POST":
         if not form.validate():
             return render_template("shops/create.html", form=form)
         else:
-            client = form.domain()
+            test = form.domain()
             shops = Shops.query.filter_by().all()
             ids = [shop_data.shop_id for shop_data in shops]
             ids.append(0)
-            client.shop_id = max(ids) + 1
-            db.session.add(client)
+            test.shop_id = max(ids) + 1
+            db.session.add(test)
             db.session.commit()
             return redirect(url_for("shops"))
 
@@ -187,8 +242,8 @@ def new_shop():
 def update_shop(uuid):
     shop = Shops.query.filter(Shops.shop_id == uuid).first()
     form = shop.wtf()
-    form.Test.choices = [(str(test.test_id), test.Price) for test
-                            in Tests.query.join(Clients, Tests.client_idIdFk == Clients.client_id).all()]
+    form.Product.choices = [(str(product.product_id), product.Product_name) for product
+                            in Products.query.join(Tests, Products.test_idIdFk == Tests.test_id).all()]
 
     if request.method == "POST":
         if not form.validate():
@@ -208,61 +263,6 @@ def delete_shop(uuid):
         db.session.commit()
 
     return redirect(url_for("shops"))
-
-
-@app.route("/products")
-def products():
-    all_products = Products.query.join(Shops).all()
-    return render_template("products/index.html", products=all_products)
-
-
-@app.route("/products/new", methods=["GET", "POST"])
-def new_product():
-    form = ProductsViewModel()
-    form.Shop.choices = [(str(shop.shop_id), shop.Shop_name) for shop
-                         in Shops.query.join(Tests, Shops.test_idIdFk == Tests.test_id).all()]
-
-    if request.method == "POST":
-        if not form.validate():
-            return render_template("products/create.html", form=form)
-        else:
-            test = form.domain()
-            products = Products.query.filter_by().all()
-            ids = [product_data.product_id for product_data in products]
-            ids.append(0)
-            test.product_id = max(ids) + 1
-            db.session.add(test)
-            db.session.commit()
-            return redirect(url_for("products"))
-
-    return render_template("products/create.html", form=form)
-
-
-@app.route("/products/<uuid>", methods=["GET", "POST"])
-def update_product(uuid):
-    product = Products.query.filter(Products.product_id == uuid).first()
-    form = product.wtf()
-    form.Shop.choices = [(str(shop.shop_id), shop.Shop_name) for shop
-                         in Shops.query.join(Tests, Shops.test_idIdFk == Tests.test_id).all()]
-
-    if request.method == "POST":
-        if not form.validate():
-            return render_template("products/update.html", form=form)
-        product.map_from(form)
-        db.session.commit()
-        return redirect(url_for("products"))
-
-    return render_template("products/update.html", form=form)
-
-
-@app.route("/products/delete/<uuid>", methods=["POST"])
-def delete_product(uuid):
-    product = Products.query.filter(Products.product_id == uuid).first()
-    if product:
-        db.session.delete(product)
-        db.session.commit()
-
-    return redirect(url_for("products"))
 
 
 
@@ -318,6 +318,7 @@ def delete_vendor(uuid):
         db.session.commit()
 
     return redirect(url_for("vendors"))
+	
 	
 	
 @app.route("/inits")
@@ -377,11 +378,13 @@ def update_init(uuid):
         return redirect(url_for("inits"))
 
     return render_template("inits/update.html", form=form)
+	
+	
 
 
 
-if __name__ == "__main__":
-    app.run(debug=True)
+
+
 
 
 
