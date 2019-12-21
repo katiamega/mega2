@@ -3,8 +3,8 @@ from sqlalchemy.orm import backref
 from datetime import datetime
 from views.clients import ClientsViewModel
 from views.tests import TestsViewModel
-from views.products import ProductsViewModel
 from views.shops import ShopsViewModel
+from views.products import ProductsViewModel
 from views.vendors import VendorsViewModel
 from views.inits import InitsViewModel
 
@@ -60,30 +60,6 @@ class Tests(db.Model):
 		self.Productor = form.Productor.data,
 		self.client_idIdFk = form.Client.data
 
-class Products(db.Model):
-	__tablename__ = 'products'
-
-	product_id = db.Column("product_id", db.Integer, primary_key=True)
-	Product_name = db.Column("product_name", db.String, nullable=False)
-	Product_price = db.Column("product_price", db.Integer, nullable=False)
-	CreatedOn = db.Column("created", db.TIMESTAMP, default=datetime.now)
-
-	test_idIdFk = db.Column("test_ididfk", db.Integer, db.ForeignKey("tests.test_id"))
-	Test = db.relationship("Tests", backref=backref('Products', cascade='all,delete'), passive_deletes=True)
-
-	def wtf(self):
-		return ProductsViewModel(
-			Product_name=self.Product_name,
-			Product_price=self.Product_price,
-			CreatedOn=self.CreatedOn,
-			Test=self.test_idIdFk
-		)
-
-	def map_from(self, form):
-		self.Product_name = form.Product_name.data,
-		self.Product_price = form.Product_price.data,
-		self.test_idIdFk = form.Test.data
-		
 class Shops(db.Model):
 	__tablename__ = "shops"
 
@@ -93,8 +69,8 @@ class Shops(db.Model):
 	Shop_contact = db.Column("shop_contact", db.Integer, nullable=False)
 	CreatedOn = db.Column("created", db.TIMESTAMP, default=datetime.now)
 
-	product_idIdFk = db.Column("product_ididfk", db.Integer, db.ForeignKey("products.product_id"))
-	Product = db.relationship("Products", backref=backref('Shops', cascade='all,delete'), passive_deletes=True)
+	test_idIdFk = db.Column("test_ididfk", db.Integer, db.ForeignKey("tests.test_id"))
+	Test = db.relationship("Tests", backref=backref('Shops', cascade='all,delete'), passive_deletes=True)
 
 	def wtf(self):
 		return ShopsViewModel(
@@ -102,14 +78,40 @@ class Shops(db.Model):
 			Locale=self.Locale,
 			Shop_contact=self.Shop_contact,
 			CreatedOn=self.CreatedOn,
-			Product=self.product_idIdFk
+			Test=self.test_idIdFk
 		)
 
 	def map_from(self, form):
 		self.Shop_name = form.Shop_name.data,
 		self.Locale = form.Locale.data,
 		self.Shop_contact = form.Shop_contact.data,
-		self.product_idIdFk = form.Product.data
+		self.test_idIdFk = form.Test.data
+
+class Products(db.Model):
+	__tablename__ = 'products'
+
+	product_id = db.Column("product_id", db.Integer, primary_key=True)
+	Product_name = db.Column("product_name", db.String, nullable=False)
+	Product_price = db.Column("product_price", db.Integer, nullable=False)
+	CreatedOn = db.Column("created", db.TIMESTAMP, default=datetime.now)
+
+	shop_idIdFk = db.Column("shop_ididfk", db.Integer, db.ForeignKey("shops.shop_id"))
+	Shop = db.relationship("Shops", backref=backref('Products', cascade='all,delete'), passive_deletes=True)
+
+	def wtf(self):
+		return ProductsViewModel(
+			Product_name=self.Product_name,
+			Product_price=self.Product_price,
+			CreatedOn=self.CreatedOn,
+			Shop=self.shop_idIdFk
+		)
+
+	def map_from(self, form):
+		self.Product_name = form.Product_name.data,
+		self.Product_price = form.Product_price.data,
+		self.shop_idIdFk = form.Shop.data
+		
+
 		
 class Vendors(db.Model):
 	__tablename__ = "vendors"

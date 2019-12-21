@@ -12,7 +12,7 @@
                 <th style="width: 30%">Shop_name</th>
                 <th style="width: 30%">Locale</th>
 				<th style="width: 30%">Shop_contact</th>
-				<th style="width: 30%">Product_name</th>
+				<th style="width: 30%">Price</th>
                 <th style="width: 30%">Created On</th>
                 <th style="width: 20%"></th>
             </tr>
@@ -23,7 +23,7 @@
                     <td>{{ shop.Shop_name }}</td>
                     <td>{{ shop.Locale }}</td>
 					<td>{{ shop.Shop_contact }}</td>
-					<td>{{ shop.Product.Product_name }}</td>
+					<td>{{ shop.Test.Price }}</td>
                     <td>{{ shop.CreatedOn.strftime("%b %d %Y %H:%M:%S")  }}</td>
                     <td class="d-flex justify-content-end">
                         <a href="{{url_for('update_shop', uuid=shop.shop_id)}}" class="btn btn-success">Edit</a>
