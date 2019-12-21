@@ -153,19 +153,19 @@ class Inits(db.Model):
 
     product_idIdFk = db.Column("product_idIdFk", db.Integer, db.ForeignKey("products.product_id"))
     Product = db.relationship("Products", backref=backref('product', cascade='all,delete'), passive_deletes=True)
-    vendor_idIdFk = db.Column("vendor_idIdFk", db.Integer, db.ForeignKey("vendors.vendor_id"))
-    Vendor = db.relationship("Vendors", backref=backref('vendor', cascade='all,delete'),
+    client_idIdFk = db.Column("client_idIdFk", db.Integer, db.ForeignKey("clients.client_id"))
+    Client = db.relationship("Clients", backref=backref('client', cascade='all,delete'),
                              passive_deletes=True)
 
     def wtf(self):
         return InitsViewModel(
             Product=self.product_idIdFk,
-            Vendor=self.vendor_idIdFk,
+            Client=self.client_idIdFk,
             CreatedOn=self.CreatedOn
         )
 
     def map_from(self, form):
-        self.vendor_idIdFk = form.Vendor.data,
+        self.client_idIdFk = form.Client.data,
         self.product_idIdFk = form.Product.data
 
 

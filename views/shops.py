@@ -1,7 +1,7 @@
 from wtforms import StringField, DateTimeField, IntegerField, SubmitField, validators, SelectField
 from flask_wtf import FlaskForm
 from domain import models
-
+from wtforms.validators import DataRequired, Length, Email, NumberRange
 
 
 class ShopsViewModel(FlaskForm):

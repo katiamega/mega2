@@ -318,23 +318,22 @@ def delete_vendor(uuid):
         db.session.commit()
 
     return redirect(url_for("vendors"))
-	
-	
-	
+
+
 @app.route("/inits")
 def inits():
-    all_inits = Inits.query.join(Products).join(Vendors).all()
+    all_inits = Inits.query.join(Products).join(Clients).all()
     return render_template("inits/index.html", inits=all_inits)
+
 
 @app.route("/inits/new", methods=["GET", "POST"])
 def new_init():
     form = InitsViewModel()
-    form.Vendor.choices = [
-        (str(vendor.vendor_id), vendor.Vendor_name) for vendor in
-        Vendors.query.all()]
+    form.Client.choices = [(str(client.client_id), client.Client_name) for client in
+        Clients.query.all()]
 
     form.Product.choices = [(str(product.product_id), product.Product_name) for product in
-                             Products.query.all()]
+                            Products.query.all()]
 
     if request.method == "POST":
         if not form.validate():
@@ -362,12 +361,12 @@ def delete_init(uuid):
 def update_init(uuid):
     init = Inits.query.filter(Inits.inits_id == uuid).first()
     form = init.wtf()
-    form.Vendor.choices = [
-        (str(vendor.vendor_id), vendor.Vendor_name) for vendor in
-        Vendors.query.all()]
+    form.Client.choices = [
+        (str(client.client_id), client.Client_name) for client in
+        Clients.query.all()]
 
     form.Product.choices = [(str(product.product_id), product.Product_name) for product in
-                             Products.query.all()]
+                            Products.query.all()]
 
     if request.method == "POST":
         if not form.validate():
@@ -378,17 +377,7 @@ def update_init(uuid):
         return redirect(url_for("inits"))
 
     return render_template("inits/update.html", form=form)
-	
-	
 
-
-
-
-
-
-
-
-	
 
 if __name__ == "__main__":
     app.run(debug=True)
