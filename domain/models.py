@@ -149,11 +149,11 @@ class Inits(db.Model):
     __tablename__ = "inits"
 
     inits_id = db.Column("init_id", db.Integer, primary_key=True)
-    CreatedOn = db.Column("createdOn", db.TIMESTAMP, default=datetime.now)
+    CreatedOn = db.Column("created", db.TIMESTAMP, default=datetime.now)
 
-    product_idIdFk = db.Column("product_idIdFk", db.Integer, db.ForeignKey("products.product_id"))
+    product_idIdFk = db.Column("product_ididfk", db.Integer, db.ForeignKey("products.product_id"))
     Product = db.relationship("Products", backref=backref('product', cascade='all,delete'), passive_deletes=True)
-    client_idIdFk = db.Column("client_idIdFk", db.Integer, db.ForeignKey("clients.client_id"))
+    client_idIdFk = db.Column("client_ididfk", db.Integer, db.ForeignKey("clients.client_id"))
     Client = db.relationship("Clients", backref=backref('client', cascade='all,delete'),
                              passive_deletes=True)
 

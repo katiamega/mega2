@@ -346,7 +346,6 @@ def new_init():
 
     return render_template("inits/create.html", form=form)
 
-
 @app.route("/inits/delete/<uuid>", methods=["POST"])
 def delete_init(uuid):
     init = Inits.query.filter(Inits.inits_id == uuid).first()
@@ -377,6 +376,9 @@ def update_init(uuid):
         return redirect(url_for("inits"))
 
     return render_template("inits/update.html", form=form)
+
+
+
 
 
 if __name__ == "__main__":
