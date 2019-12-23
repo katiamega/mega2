@@ -27,7 +27,7 @@ html, body {
 
 #header__navigation a {
     font-size: 1.1em;
-    margin-left: 20px !important;
+    margin-left: 30px !important;
     color: red;
     padding: 5px;
 }
@@ -54,9 +54,9 @@ html, body {
 }
 
 .checkbox-input input {
-    height: 10px;
-    width: 10px;
-    margin-left: 20px;
+    height: 15px;
+    width: 15px;
+    margin-left: 30px;
     margin-bottom: 5px;
 }
 
