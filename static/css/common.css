@@ -15,7 +15,7 @@ html, body {
 
 
 #header {
-    padding: 20px 0;
+    padding: 10px 0;
     background-color: #f5f5f5;
     border-bottom: 0.5px solid #e6e6e6;
 }
@@ -28,16 +28,16 @@ html, body {
 #header__navigation a {
     font-size: 1.1em;
     margin-left: 30px !important;
-    color: red;
-    padding: 10px;
+    color: black;
+    padding: 5px;
 }
 
 #header__navigation a:hover {
-    color: blue;
+    color: red;
 }
 
 #content {
-    margin-top: 30px;
+    margin-top: 25px;
 }
 
 #content__page__header {
@@ -54,9 +54,9 @@ html, body {
 }
 
 .checkbox-input input {
-    height: 10px;
-    width: 10px;
-    margin-left: 20px;
+    height: 15px;
+    width: 15px;
+    margin-left: 30px;
     margin-bottom: 5px;
 }
 
